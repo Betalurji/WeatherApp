@@ -76,7 +76,7 @@ const WeatherApp: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-white bg-black">
+    <div className="flex items-center justify-center min-h-screen text-white bg-gray-800">
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-center mb-4">
