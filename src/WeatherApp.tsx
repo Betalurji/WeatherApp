@@ -46,13 +46,13 @@ const WeatherApp: React.FC = () => {
           getCityName(latitude, longitude);
         },
         (error) => {
-          console.error("Konum bilgisine erişim reddedildi:", error.message);
-          setError("Konum bilgisine erişim izni reddedildi. Lütfen konum izni vererek tekrar deneyin.");
+          console.error("Access to location information is denied:", error.message);
+          setError("Permission to access location information has been denied. Please try again with location permission.");
         }
       );
     } else {
-      console.error("Tarayıcı konum API'si desteklenmiyor.");
-      setError("Tarayıcı konum API'si desteklenmiyor.");
+      console.error("Browser location API is not supported.");
+      setError("Browser location API is not supported.");
     }
   };
 
@@ -63,8 +63,8 @@ const WeatherApp: React.FC = () => {
       setCity(cityName);
       fetchData(cityName);
     } catch (error) {
-      console.error("Şehir adı alınırken hata oluştu:", error);
-      setError("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+      console.error("Error retrieving city name:", error);
+      setError("Something went wrong. Please try again later.");
     }
   };
 
@@ -79,15 +79,15 @@ const WeatherApp: React.FC = () => {
       });
       const data = response.data;
       if (!data.result || data.result.length === 0) {
-        setError("Şehir bulunamadı. Lütfen geçerli bir şehir adı girin.");
+        setError("City not found. Please enter a valid city name.");
         setWeatherData([]);
         return;
       }
       setWeatherData(data.result);
       setError(null);
     } catch (error) {
-      console.error('Hava durumu verisi alınırken hata oluştu:', error);
-      setError("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+      console.error('Error retrieving weather data:', error);
+      setError("Something went wrong. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ const WeatherApp: React.FC = () => {
   const onSubmit = async (data: any) => {
     const cityName = data.city.trim();
     if (!isNaN(Number(cityName))) {
-      setError("Şehir adı geçersiz. Lütfen geçerli bir şehir adı girin.");
+      setError("City not found. Please enter a valid city name.");
       setWeatherData([]);
       setLoading(false);
     } else {
