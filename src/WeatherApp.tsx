@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios'; // axios kütüphanesini ekledik
 
 const API_KEY = '4zpMA0sCv9c0mWmWawmliB:0F9ksrn4Y8fGOdANLTaIDN';
 const API_URL_BASE = 'https://api.collectapi.com/weather/getWeather?data.lang=tr&data.city=';
@@ -37,18 +37,19 @@ const WeatherApp: React.FC = () => {
       return;
     }
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL_BASE}${city}`, {
+      const response = await axios.get(`${API_URL_BASE}${city}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `apikey ${API_KEY}`
         }
       });
-      const data = await response.json();
+      const data = response.data;
       if (!data.result || data.result.length === 0) {
         setError("Şehir bulunamadı. Lütfen geçerli bir şehir adı girin.");
         setWeatherData([]);
@@ -57,7 +58,7 @@ const WeatherApp: React.FC = () => {
       setWeatherData(data.result);
       setError(null);
     } catch (error) {
-      console.error('Error fetching weather data:', error);
+      console.error('Hava durumu verisi alınırken hata oluştu:', error);
       setError("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
     } finally {
       setLoading(false);
